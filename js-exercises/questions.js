@@ -28,7 +28,9 @@
  */
 function filterNegativeNumbers(numbers) {
   // Your implementation here
+  return numbers.filter(num => num >= 0);
 }
+
 
 /**
  * Exercise 2: Doubling Numbers Divisible by Three
@@ -47,7 +49,9 @@ function filterNegativeNumbers(numbers) {
  */
 function doubleDivisibleByThree(numbers) {
   // Your implementation here
+  return numbers.filter(num =>  num%3 === 0).map(num =>  num*2)
 }
+
 
 /**
  * Exercise 3: Selecting High-Performing Students with a Specific Hobby
@@ -76,6 +80,12 @@ function doubleDivisibleByThree(numbers) {
  */
 function selectHighPerformingStudents(students) {
   // Your implementation here
+  const arr = students.filter(student => student.GPA >= 5 && student.hobbies.includes("coding"))
+  const reduceArr = arr.reduce((array, idx) => {  
+    array.push({name: idx.name, email: idx.email})
+    return array;
+  }, [])
+  return reduceArr.sort((a, b) => a.name.localeCompare(b.name))
 }
 
 /**
@@ -104,6 +114,25 @@ function selectHighPerformingStudents(students) {
  */
 function aggregateStudentData(students) {
   // Your implementation here
+  const result = students.reduce((array, idx) => {
+    array.studentNum += 1;
+    array.studentAvgGPA += idx.GPA;
+    if (idx.hobbies.includes("coding")) {
+      array.codingStudentNum += 1;
+      array.codingStudentGPA += idx.GPA;
+    }
+    return array;
+  }, {
+    studentNum: 0,
+    studentAvgGPA: 0,
+    codingStudentNum: 0,
+    codingStudentGPA: 0
+  });
+  result.studentAvgGPA = parseFloat((result.studentAvgGPA / result.studentNum).toFixed(2));
+  result.codingStudentGPA = parseFloat((result.codingStudentGPA / result.codingStudentNum).toFixed(2));
+  return result;
+
+
 }
 
 /**
@@ -126,8 +155,22 @@ function aggregateStudentData(students) {
  * @return {string} The converted string, either in camelCase or sentence form.
  */
 function swapForm(input) {
-  // Your implementation here
+  // Your implementation here 
+  if (input.includes(" ")) {
+    return input.split(" ").map((word, index) => {
+      if (index === 0) {
+        return word.toLowerCase();
+      } else {
+        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+      }
+    }).join("");
+  } else {
+    return input.replace(/([A-Z])/g, ' $1').toLowerCase();
+  }
+  
+
 }
+
 
 // Export the function for testing with Jest
 module.exports = {
